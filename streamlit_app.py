@@ -54,10 +54,10 @@ def main():
     data = fetch_data(engine)
 
     # Display data in Streamlit
-    st.write("Most recent weather data:")
+    st.markdown(""":blue[**Most recent weather data:**]""")
     st.dataframe(data)
 
-    st.write("Scatter Graph 📊")
+    st.markdown(""":blue[**Scatter Graph 📊**]""")
     fig = px.scatter(data, x='temperature', y='humidity', color='city', hover_name='city')
     st.plotly_chart(fig)
 
