@@ -21,7 +21,7 @@ def create_engine_connection():
 
 # Function to get all data
 def fetch_data(engine):
-    query = "SELECT * FROM student.\"Deens_weather\" ORDER BY observation_time DESC LIMIT 15;"
+    query = "SELECT * FROM student.\"Deens_weather\" ORDER BY observation_time DESC, city ASC LIMIT 15;"
     df = pd.read_sql_query(query, engine)
     return df
 # Function to get only observation time and temperature
@@ -36,7 +36,7 @@ def fetch_temperature_data(engine, city):
 # Streamlit application
 def main():
     st.title("Weather Data App🌦️🌡️")
-    st.logo("https://cdn.jim-nielsen.com/ios/512/weather-2021-12-07.png?rf=1024")
+    st.logo("https://cdn.textstudio.com/output/sample/normal/2/5/4/6/weather-logo-600-16452.webp")
     
     # Create SQLAlchemy engine
     engine = create_engine_connection()
@@ -44,7 +44,17 @@ def main():
     # Get data from Deens_weather table
     data = fetch_data(engine)
 
-    
+    city = st.selectbox("Select City", ["New York", "London", "Tokyo", "Dubai", "Cape Town", "Paris", "Mexico city", "Shanghai", "Cairo", "Lagos", "São Paulo", "Mumbai", "Moscow", "Istanbul", "Seoul"])
+
+    data2 = fetch_temperature_data(engine, city)
+
+    # line chart
+    if not data2.empty:
+        fig = px.line(data2, x='observation_time', y=f'temperature', title=f'Temperature Trend in {city}')
+        st.plotly_chart(fig)
+    else:
+        st.write(f"No data available for {city}.")
+
     st.markdown(""":blue[**Most recent weather data:**]""")
     st.dataframe(data)
 
@@ -52,16 +62,6 @@ def main():
     fig = px.scatter(data, x='temperature', y='humidity', color='city', hover_name='city')
     st.plotly_chart(fig)
 
-    city = st.selectbox("Select City", ["New York", "London", "Tokyo", "Dubai", "Cape Town", "Paris", "Mexico city", "Shanghai", "Cairo", "Lagos", "São Paulo", "Mumbai", "Moscow", "Istanbul", "Seoul"])
-
-    data2 = fetch_temperature_data(engine, city)
-
-    # line chart
-    if not data2.empty:
-        fig = px.line(data2, x='observation_time', y='temperature', title=f'Temperature Trend in {city}')
-        st.plotly_chart(fig)
-    else:
-        st.write(f"No data available for {city}.")
 
 if __name__ == "__main__":
     main()
