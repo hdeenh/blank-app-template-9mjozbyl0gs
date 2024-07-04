@@ -4,6 +4,7 @@ import pandas as pd
 import psycopg2 as pg2
 import plotly.express as px
 import os
+import requests
 
 # Database connection configuration
 HOST = st.secrets['DB_HOST']
@@ -29,12 +30,14 @@ def fetch_temperature_data(engine, city):
     df2 = pd.read_sql_query(query2, engine)
     return df2
 
+
 ###############################################################################################################################
 
 # Streamlit application
 def main():
     st.title("Weather Data App🌦️🌡️")
     st.logo("https://cdn.jim-nielsen.com/ios/512/weather-2021-12-07.png?rf=1024")
+    
     # Create SQLAlchemy engine
     engine = create_engine_connection()
 
