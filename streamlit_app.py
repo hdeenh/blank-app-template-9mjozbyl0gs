@@ -24,7 +24,7 @@ def fetch_data(engine):
     return df
 
 def fetch_temperature_data(engine, city):
-    query2 = f"SELECT observation_time, temperature FROM student.\"Deens_weather\" WHERE city = '{city}' ORDER BY observation_time"
+    query2 = f"SELECT observation_time, temperature, wind_speed, pressure, humidity FROM student.\"Deens_weather\" WHERE city = '{city}' ORDER BY observation_time"
     df2 = pd.read_sql_query(query2, engine)
     return df2
 
@@ -43,12 +43,12 @@ def main():
     data = fetch_data(engine)
 
     city = st.selectbox("Select City", ["New York", "London", "Tokyo", "Dubai", "Cape Town", "Paris", "Mexico city", "Shanghai", "Cairo", "Lagos", "São Paulo", "Mumbai", "Moscow", "Istanbul", "Seoul"])
-
+    params = st.selectbox("Select weather parameter", ["temperature", "wind_speed", "humidity", "pressure"])
     data2 = fetch_temperature_data(engine, city)
 
     # line chart
     if not data2.empty:
-        fig = px.line(data2, x='observation_time', y=f'temperature', title=f'Temperature Trend in {city}')
+        fig = px.line(data2, x='observation_time', y=f'{params}', title=f'Temperature Trend in {city}')
         st.plotly_chart(fig)
     else:
         st.write(f"No data available for {city}.")
