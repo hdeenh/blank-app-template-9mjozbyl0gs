@@ -48,7 +48,7 @@ def main():
 
     # line chart
     if not data2.empty:
-        fig = px.line(data2, x='observation_time', y=f'{params}', title=f'Temperature Trend in {city}')
+        fig = px.line(data2, x='observation_time', y=f'{params}', title=f'{params} Trend in {city}')
         st.plotly_chart(fig)
     else:
         st.write(f"No data available for {city}.")
