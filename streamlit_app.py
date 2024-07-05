@@ -33,9 +33,10 @@ def fetch_temperature_data(engine, city):
 
 # Streamlit application
 def main():
-    st.title("Weather Data App🌦️🌡️")
-    st.logo("https://cdn.textstudio.com/output/sample/normal/2/5/4/6/weather-logo-600-16452.webp")
-    
+    st.image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo6lCF19a-hKONJB6oyYs6rKA63bKln9O7dg&s")
+    #st.title("Weather Data App🌦️🌡️")
+    st.logo("https://www.creativefabrica.com/wp-content/uploads/2021/03/31/weather-icon-illustration03-Graphics-10205167-1.jpg")
+
     engine = create_engine_connection()
 
     # Get data from Deens weather table
@@ -58,6 +59,50 @@ def main():
     st.markdown(""":blue[**Scatter Graph 📊**]""")
     fig = px.scatter(data, x='temperature', y='humidity', color='city', hover_name='city')
     st.plotly_chart(fig)
+
+    st.markdown("### Weather Trivia Quiz")
+
+    questions = {
+        "What is the hottest temperature ever recorded on Earth?": {
+            "options": ["54°C", "56.7°C", "58°C", "60°C"],
+            "answer": "56.7°C"
+        },
+        "Which city is known as the wettest place on Earth?": {
+            "options": ["Mawsynram, India", "London, UK", "Seattle, USA", "Bogotá, Colombia"],
+            "answer": "Mawsynram, India"
+        },
+        "What type of cloud is known for producing thunderstorms?": {
+            "options": ["Cumulus", "Stratus", "Cirrus", "Cumulonimbus"],
+            "answer": "Cumulonimbus"
+        },
+        "Is the atmospheric pressure inside a tropical storm higher or lower than normal?": {
+            "options": ["Higher", "Lower"],
+            "answer": "Lower"
+        },
+        "What does the Enhanced Fujita scale measure?": {
+            "options": ["Hurricanes", "Snowfall", "Tornadoes", "Humidity"],
+            "answer": "Tornadoes"
+        },
+        "Which is NOT a layer of the atmosphere?": {
+            "options": ["Stratosphere", "Thermosphere", "Troposphere", "Lithosphere"],
+            "answer": "Lithosphere"
+        },
+        "Is the atmospheric pressure inside a tropical storm higher or lower than normal?": {
+            "options": ["Higher", "Lower"],
+            "answer": "Cumulonimbus"
+        }}
+
+    for question, q_data in questions.items():
+        st.markdown(f"**{question}**")
+        options = q_data["options"]
+        answer = q_data["answer"]
+        user_answer = st.radio("Choose your answer:", options, key=question)
+
+        if user_answer:
+            if user_answer == answer:
+                st.success("Correct!")
+            else:
+                st.error(f"Incorrect! The correct answer is: {answer}")
 
 
 if __name__ == "__main__":
